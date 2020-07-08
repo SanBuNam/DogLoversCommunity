@@ -12,7 +12,7 @@ module.exports = {
     extensions: [".js", ".jsx"],
   },
   devServer: {
-    historyApiFallback: true, // needed for react router
+    historyApiFallback: true, // need it for react router
   },
   module: {
     rules: [
