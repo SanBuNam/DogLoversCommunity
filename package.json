@@ -1,26 +1,28 @@
 {
-  "name": "dog_lovers_community",
+  "name": "react_redux_node_mongodb",
   "version": "1.0.0",
-  "description": "Online community for dog lovers",
+  "description": "Teach coding in Korean",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack",
     "dev": "webpack-dev-server --open",
     "initialize": "babel-node src/server/initialize-db",
-    "server": "babel-node src/server/server"
+    "server": "babel-node src/server/server",
+    "server-test": "babel-node src/server/server.spec",
+    "start-dev": "concurrently \"npm run server\" \"npm run dev\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SanBuNam/DogLoversCommunity.git"
+    "url": "git+https://github.com/SanBuNam/React_redux_node_mongodb.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SanBuNam/DogLoversCommunity/issues"
+    "url": "https://github.com/SanBuNam/React_redux_node_mongodb/issues"
   },
-  "homepage": "https://github.com/SanBuNam/DogLoversCommunity#readme",
+  "homepage": "https://github.com/SanBuNam/React_redux_node_mongodb#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/node": "^7.0.0",
@@ -29,6 +31,7 @@
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.2",
     "body-parser": "^1.18.3",
+    "concurrently": "^4.0.1",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "mongodb": "^3.1.10",
@@ -37,14 +40,17 @@
     "webpack-dev-server": "^3.1.7"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "history": "^4.7.2",
+    "md5": "^2.2.1",
     "react": "^16.4.2",
     "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.2",
-    "uuid": "^8.2.0"
+    "uuid": "^3.3.2"
   }
 }
