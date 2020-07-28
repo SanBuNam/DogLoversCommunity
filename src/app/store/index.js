@@ -4,13 +4,29 @@ import { createLogger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 
 const sagaMiddleware = createSagaMiddleware();
-import * as sagas from "./sagas.mock";
+// import * as sagas from "./sagas.mock";
+import * as sagas from "./sagas";
 import * as mutations from "./mutations";
 
 export const store = createStore(
   combineReducers({
-    tasks(tasks = defaultState.tasks, action) {
+    session(userSession = defaultState.session || {}, action) {
+      let { type, authenticated, session } = action;
+      switch (type) {
+        case mutations.SET_STATE:
+          return { ...userSession, id: action.state.session.id };
+        case mutations.REQUEST_AUTHENTICATE_USER:
+          return { ...userSession, authenticated: mutations.AUTHENTICATING };
+        case mutations.PROCESSING_AUTHENTICATE_USER:
+          return { ...userSession, authenticated };
+        default:
+          return userSession;
+      }
+    },
+    tasks(tasks = [], action) {
       switch (action.type) {
+        case mutations.SET_STATE:
+          return action.state.tasks;
         case mutations.CREATE_TASK:
           return [
             ...tasks,
@@ -19,43 +35,47 @@ export const store = createStore(
               name: "New Task",
               group: action.groupID,
               owner: action.ownerID,
-              isComplete: false,
-            },
+              isComplete: false
+            }
           ];
         case mutations.SET_TASK_COMPLETE:
-          return tasks.map((task) => {
+          return tasks.map(task => {
             return task.id === action.taskID
               ? { ...task, isComplete: action.isComplete }
               : task;
           });
-        case mutations.SET_TASK_NAME:
-          return tasks.map((task) => {
-            return task.id === action.taskID
-              ? { ...task, name: action.name }
-              : task;
-          });
         case mutations.SET_TASK_GROUP:
-          return tasks.map((task) => {
+          return tasks.map(task => {
             return task.id === action.taskID
               ? { ...task, group: action.groupID }
+              : task;
+          });
+        case mutations.SET_TASK_NAME:
+          return tasks.map(task => {
+            return task.id === action.taskID
+              ? { ...task, name: action.name }
               : task;
           });
       }
       return tasks;
     },
-    comments(comments = defaultState.comments) {
+    comments(comments = []) {
       return comments;
     },
-    groups(groups = defaultState.groups) {
+    groups(groups = [], action) {
+      switch (action.type) {
+        case mutations.SET_STATE:
+          return action.state.groups;
+      }
       return groups;
     },
-    users(users = defaultState.users) {
+    users(users = []) {
       return users;
-    },
+    }
   }),
   applyMiddleware(createLogger(), sagaMiddleware)
 );
 
 for (let saga in sagas) {
-  sagaMiddleware.run();
+  sagaMiddleware.run(sagas[saga]);
 }

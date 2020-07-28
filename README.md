@@ -1,3 +1,1 @@
-# DogLoversCommunity
-
-Online community for dog lovers
+# React_redux_node_mongodb

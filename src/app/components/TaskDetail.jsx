@@ -3,27 +3,40 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as mutations from "../store/mutations";
 
-const taskDetail = ({
+const TaskDetail = ({
   id,
   comments,
   task,
   isComplete,
   groups,
-
   setTaskCompletion,
   setTaskName,
-  setTaskGroup,
+  setTaskGroup
 }) => (
-  <div>
-    <input onChange={setTaskName} value={task.name} />
+  <div className="card p-3 col-6">
     <div>
-      <button onClick={() => setTaskCompletion(id, !isComplete)}>
+      <input
+        type="text"
+        value={task.name}
+        onChange={setTaskName}
+        className="form-control form-control-lg"
+      />
+    </div>
+    <div>
+      <button
+        className="btn btn-primary mt-2"
+        onClick={() => setTaskCompletion(id, !isComplete)}
+      >
         {isComplete ? `Reopen` : `Complete`}
       </button>
     </div>
-    <div>
-      <select onChange={setTaskGroup} value={task.group}>
-        {groups.map((group) => (
+    <div className="mt-3">
+      <select
+        className="form-control"
+        onChange={setTaskGroup}
+        value={task.group}
+      >
+        {groups.map(group => (
           <option key={group.id} value={group.id}>
             {group.name}
           </option>
@@ -32,7 +45,7 @@ const taskDetail = ({
     </div>
     <div>
       <Link to="/dashboard">
-        <button>Done</button>
+        <button className="btn btn-primary mt-2">Done</button>
       </Link>
     </div>
   </div>
@@ -40,19 +53,19 @@ const taskDetail = ({
 
 const mapStateToProps = (state, ownProps) => {
   let id = ownProps.match.params.id;
-  let task = state.tasks.find((task) => task.id === id);
+  let task = state.tasks.find(task => task.id === id);
   let groups = state.groups;
 
   return {
     id,
     task,
     groups,
-    isComplete: task.isComplete,
+    isComplete: task.isComplete
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const id = ownProps.match.params.id;
+  let id = ownProps.match.params.id;
   return {
     setTaskCompletion(id, isComplete) {
       dispatch(mutations.setTaskCompletion(id, isComplete));
@@ -62,11 +75,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     setTaskName(e) {
       dispatch(mutations.setTaskName(id, e.target.value));
-    },
+    }
   };
 };
 
-export const ConnectTaskDetail = connect(
+export const ConnectedTaskDetail = connect(
   mapStateToProps,
   mapDispatchToProps
-)(taskDetail);
+)(TaskDetail);
