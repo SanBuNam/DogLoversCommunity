@@ -7,23 +7,17 @@ const authenticationTokens = [];
 async function assembleUserState(user) {
   let db = await connectDB();
 
-  let tasks = await db
-    .collection(`tasks`)
-    .find({ owner: user.id })
-    .toArray();
-  let groups = await db
-    .collection(`groups`)
-    .find({ owner: user.id })
-    .toArray();
+  let tasks = await db.collection(`tasks`).find({ owner: user.id }).toArray();
+  let groups = await db.collection(`groups`).find({ owner: user.id }).toArray();
 
   return {
     tasks,
     groups,
-    session: { authenticated: `AUTHENTICATED`, id: user.id }
+    session: { authenticated: `AUTHENTICATED`, id: user.id },
   };
 }
 
-export const authenticationRoute = app => {
+export const authenticationRoute = (app) => {
   app.post("/authenticate", async (req, res) => {
     let { username, password } = req.body;
     let db = await connectDB();
@@ -46,7 +40,7 @@ export const authenticationRoute = app => {
 
     authenticationTokens.push({
       token,
-      userID: user.id
+      userID: user.id,
     });
 
     let state = await assembleUserState(user);
