@@ -2,8 +2,11 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { connectDB } from "./connect-db";
+<<<<<<< HEAD
 import "./initialize-db";
 import { authenticationRoute } from "./authenticate";
+=======
+>>>>>>> 02a10417fbadba3e5acf9da3e054aa63448f8ccc
 
 let port = 7777;
 let app = express();
@@ -11,19 +14,28 @@ let app = express();
 app.listen(port, console.log("Server listening on port", port));
 
 // app.get("/", (req, res) => {
+<<<<<<< HEAD
 //   res.send("Hello World!!!!");
+=======
+//   res.send("Hello Server");
+>>>>>>> 02a10417fbadba3e5acf9da3e054aa63448f8ccc
 // });
 
 app.use(cors(), bodyParser.urlencoded({ extended: true }), bodyParser.json());
 
+<<<<<<< HEAD
 authenticationRoute(app);
 
 export const addNewTask = async task => {
+=======
+export const addNewTask = async (task) => {
+>>>>>>> 02a10417fbadba3e5acf9da3e054aa63448f8ccc
   let db = await connectDB();
   let collection = db.collection(`tasks`);
   await collection.insertOne(task);
 };
 
+<<<<<<< HEAD
 export const updateTask = async task => {
   let { id, group, isComplete, name } = task;
   let db = await connectDB();
@@ -52,4 +64,10 @@ app.post("/task/update", async (req, res) => {
   let task = req.body.task;
   await updateTask(task);
   res.status(200).send();
+=======
+app.post(`/task/new`, async (req, res) => {
+  let task = req.body.task;
+  await addNewTask(task);
+  res.status(200).send();
+>>>>>>> 02a10417fbadba3e5acf9da3e054aa63448f8ccc
 });
